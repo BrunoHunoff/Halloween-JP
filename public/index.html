@@ -65,7 +65,7 @@
   </section>
 
   <section class="card">
-    <h2>🏆 Ranking — 1 voto por celular (dá pra trocar)</h2>
+    <h2 id="titulo-lista">🏆 Ranking — 1 voto por celular (dá pra trocar)</h2>
     <ul id="lista"><li class="msg">Carregando...</li></ul>
   </section>
   <p class="msg" id="msg"></p>
@@ -86,6 +86,8 @@
     try { localStorage.setItem('voter_id', voterId); } catch {}
   }
   let meuVoto = null;
+  const VOTACAO = window.VOTACAO_ABERTA === true;
+  if (!VOTACAO) $('titulo-lista').textContent = '🎭 Participantes — votação abre em breve 🔒';
 
   let ultimoRender = '';
   function mostrarFoto() {
@@ -131,11 +133,11 @@
     const medalhas = ['🥇','🥈','🥉'];
     $('lista').innerHTML = data.map((p, i) => `
       <li class="${p.id === meuVoto ? 'meu' : ''}">
-        <span class="pos">${medalhas[i] || (i + 1)}</span>
+        ${VOTACAO ? `<span class="pos">${medalhas[i] || (i + 1)}</span>` : ''}
         ${p.foto_url ? `<img class="avatar" src="${esc(p.foto_url)}" alt="" loading="lazy">` : '<span class="avatar vazio">🎭</span>'}
         <div class="info"><div class="nome">${esc(p.nome)}</div><div class="fantasia">${esc(p.fantasia)}</div></div>
-        <span class="votos">${p.votos}</span>
-        <button data-id="${p.id}">${p.id === meuVoto ? '✔ Votado' : 'Votar'}</button>
+        ${VOTACAO ? `<span class="votos">${p.votos}</span>
+        <button data-id="${p.id}">${p.id === meuVoto ? '✔ Votado' : 'Votar'}</button>` : ''}
       </li>`).join('');
   }
 
@@ -143,7 +145,7 @@
     const av = e.target.closest('img.avatar');
     if (av) { $('zoom').querySelector('img').src = av.src; $('zoom').classList.add('on'); return; }
     const btn = e.target.closest('button[data-id]');
-    if (!btn) return;
+    if (!btn || !VOTACAO) return;
     const id = Number(btn.dataset.id);
     if (id === meuVoto) return;
     btn.disabled = true;
