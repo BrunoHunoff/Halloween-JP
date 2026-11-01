@@ -3,4 +3,4 @@ window.SUPABASE_URL = "https://onjbewxgajwgxvcyencx.supabase.co";
 window.SUPABASE_ANON_KEY = "sb_publishable_U_1gkVb0a-aRhB5ISLyoFA_tcoqecJS";
 
 // Troque para true para liberar os botões de voto
-window.VOTACAO_ABERTA = false;
+window.VOTACAO_ABERTA = true;
